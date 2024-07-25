@@ -1,0 +1,148 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentación  de practica",
+    "version": "1.0.0",
+    "title": "Documentación  de practica",
+    "termsOfService": "Guerra Sergio",
+    "contact": {
+      "email": "sergio.guerrab@ug.edu.ec"
+    },
+    "license": {
+      "name": "Guerra Sergio"
+    }
+  },
+  "tags": [
+    {
+      "name": "Login",
+      "description": "Taller 3.2"
+    }
+  ],
+  "paths": {
+    "/practica/login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Login de Usuario",
+        "description": "Login de Usuario",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loginUserDef"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "400": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+   "loginUserDef": {
+     "type": "object",
+     "properties": {
+       "login_user": {
+         "type": "string",
+         "format": "string"
+       },
+       "login_pass": {
+         "type": "string",
+         "format": "string"
+       }
+     }
+    },
+   "NotFound": {
+      "type": "object",
+      "properties": {
+        "success": {
+            "type": "boolean",
+            "default": false
+        },
+        "message": {
+            "type": "string",
+            "example": "Recurso no encontrado"
+        },
+        "data": {
+          "type": "string",
+          "example": "{}"
+        },
+        "status": {
+          "type": "string",
+          "example": "404"
+        }
+      }
+    },
+   "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+            "type": "boolean",
+            "default": false
+        },
+        "message": {
+            "type": "string"
+        },
+        "data": {
+          "type": "string",
+          "example": "{}"
+        },
+        "status": {
+          "type": "string",
+          "example": "500"
+        }
+      }
+    },
+   "Response": {
+      "type": "object",
+      "properties": {
+        "success": {
+            "type": "boolean",
+            "default": false
+        },
+        "message": {
+            "type": "string",
+            "example": "ok"
+        },
+        "data": {
+          "type": "string",
+          "example": "{}"
+        },
+        "status": {
+          "type": "string",
+          "example": "200"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

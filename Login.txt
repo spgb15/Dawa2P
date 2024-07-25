@@ -1,0 +1,9 @@
+Login
+Registro
+feed 
+Perfil configuración
+perfil usuario
+Pantalla Admin(Manejo de contenido(Revisión de reportes), subir usuarios nuevos)
+Notificaciones
+Búsqueda de usuarios
+Mensajes (opcional)
