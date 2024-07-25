@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/practica/login": {
+    "/security/login": {
       "post": {
         "tags": [
           "Login"
@@ -72,7 +72,7 @@
          "type": "string",
          "format": "string"
        },
-       "login_pass": {
+       "login_password": {
          "type": "string",
          "format": "string"
        }
