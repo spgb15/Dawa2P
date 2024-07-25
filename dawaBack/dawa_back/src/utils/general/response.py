@@ -15,23 +15,18 @@ def response_not_found():
         'status_code': 404,
     }, 404
 
-def response_success(datos):
+def response_success(message, data=None):
     return {
-        'result': True,
-        'message': "Exitoso",
-        'data': datos,
-        'status_code': 200,
-    }, 200
+        'status': 'success',
+        'message': message,
+        'data': data
+    }
 
-def response_error(mensaje):
+def response_error(message):
     return {
-        'result': False,
-        'message': mensaje,
-        'data': {},
-        'status_code': 500,
-    }, 500
-
-
+        'status': 'error',
+        'message': message
+    }
 def response_unauthorize():
     return {
         'result': False,
@@ -40,10 +35,9 @@ def response_unauthorize():
         'status_code': 401,
     }, 401
 
-def internal_response(result, datos, mensaje):
+def internal_response(result, data, message):
     return {
         'result': result,
-        'data': datos,
-        'message': mensaje
+        'data': data,
+        'message': message
     }
-
