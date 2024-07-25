@@ -1,6 +1,6 @@
 // src/components/Topbar.jsx
 import React from 'react';
-import '../styles/Topbar.css';
+import '../Styles/Topbar.css';
 
 export default function Topbar() {
     return (

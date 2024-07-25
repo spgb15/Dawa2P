@@ -1,11 +1,10 @@
 // src/pages/home.js
 import React from 'react';
-import Sidebar from '../components/Sidebar';
-import Topbar from '../components/Topbar';
-import Feed from '../components/Feed';
-import Contacts from '../components/Contacts';
-import HomeForm from '../components/form_home';
-import '../styles/Home.css';
+import Sidebar from '../Components/Sidebar';
+import Topbar from '../Components/Topbar';
+import Feed from '../Components/Feed';
+import Contacts from '../Components/Contacts';
+import '../Styles/Home.css';
 
 export default function Home() {
     return (

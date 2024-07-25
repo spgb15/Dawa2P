@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import '../styles/form_home.css';
+import '../Styles/form_home.css';
 
 export default function HomeForm() {
     const handleSubmit = (event) => {

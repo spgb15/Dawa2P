@@ -1,4 +1,10 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
 .card {
+    display: flex; 
     justify-content: center;
     align-items: center;
     width: 40vw;
@@ -9,16 +15,17 @@
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     height: 90%;
-    
-
 }
 
 .contenedor {
-    border: 2px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
     background-image: url('../Assets/ug.jpg');
-    background-repeat: round;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center;
+    margin: 0;
 }

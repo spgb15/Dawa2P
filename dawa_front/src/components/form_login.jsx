@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly';
-import '../styles/form_login.css';
+import '../Styles/form_login.css';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 

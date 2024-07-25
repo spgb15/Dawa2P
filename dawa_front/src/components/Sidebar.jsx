@@ -1,6 +1,6 @@
 // src/components/Sidebar.jsx
 import React from 'react';
-import '../styles/Sidebar.css';
+import '../Styles/Sidebar.css';
 
 export default function Sidebar() {
     return (

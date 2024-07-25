@@ -1,5 +1,5 @@
 /* src/styles/Home.css */
-.home {
+.contenedor_home {
     display: flex;
     flex-direction: column;
 }

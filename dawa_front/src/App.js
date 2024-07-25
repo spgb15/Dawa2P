@@ -1,8 +1,9 @@
 import './App.css';
 import React, { useState} from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './pages/login.js';
-import Home from './pages/home.js'
+import Login from '../src/Pages/login.js';
+import Home from '../src/Pages/home.js';
+import Registro from '../src/Pages/registro.js';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path='/login' element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
+      <Route path='/register' element={<Registro></Registro>} />
       </Routes>
     </Router>
   );

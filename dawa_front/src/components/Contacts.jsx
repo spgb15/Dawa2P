@@ -1,6 +1,6 @@
 // src/components/Contacts.jsx
 import React from 'react';
-import '../styles/Contacts.css';
+import '../Styles/Contacts.css';
 
 export default function Contacts() {
     return (
