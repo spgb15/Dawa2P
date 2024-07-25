@@ -1,0 +1,10 @@
+/* src/styles/Home.css */
+.home {
+    display: flex;
+    flex-direction: column;
+}
+
+.homeWrapper {
+    display: flex;
+    justify-content: space-between;
+}

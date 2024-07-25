@@ -1,0 +1,9 @@
+/* src/styles/Feed.css */
+.feed {
+    flex: 2;
+    padding: 20px;
+}
+
+.feed .posts {
+    margin-top: 20px;
+}

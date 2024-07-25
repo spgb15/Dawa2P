@@ -1,0 +1,7 @@
+/* src/styles/form_home.css */
+.form_home {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

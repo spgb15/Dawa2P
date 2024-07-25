@@ -1,0 +1,18 @@
+/* src/styles/Contacts.css */
+.contacts {
+    flex: 1;
+    height: calc(100vh - 50px);
+    position: sticky;
+    top: 50px;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.contactsWrapper {
+    padding: 20px;
+}
+
+.contactsList {
+    list-style: none;
+    padding: 0;
+}
