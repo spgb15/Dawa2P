@@ -8,13 +8,17 @@ import Registro from '../src/Pages/registro.js';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  const handleAuthentication = (authenticated) => {
+    setIsAuthenticated(authenticated);
+  };
 
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path='/login' element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
-      <Route path='/register' element={<Registro></Registro>} />
+        <Route path="/login" element={<Login onAuthenticate={handleAuthentication} />} />
+        <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+        <Route path='/register' element={<Registro></Registro>} />
       </Routes>
     </Router>
   );

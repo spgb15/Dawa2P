@@ -25,7 +25,7 @@ function Copyright(props) {
     );
 }
 
-export default function SignIn() {
+export default function SignIn({ onAuthenticate }) {
     const [error, setError] = useState(null);
     const [credentials, setCredentials] = useState(null);
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function SignIn() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('username');
-        const password = data.get('password'); 
+        const password = data.get('password');
 
         if (!username || !password) {
             setError('Ingrese Usuario o contraseña válida');
@@ -43,14 +43,14 @@ export default function SignIn() {
                 login_user: username,
                 login_password: password,
             };
-            console.log(credentials);
             setCredentials(credentials);
-            setError("");
+            setError(null); // Limpiar errores
         }
     };
 
     useEffect(() => {
         if (credentials) {
+            console.log('Enviando credenciales:', credentials); // Debugging
             fetch("http://127.0.0.1:5000/security/login", {
                 method: "POST",
                 headers: {
@@ -61,37 +61,41 @@ export default function SignIn() {
             .then((res) => {
                 if (!res.ok) {
                     return res.json().then((data) => {
+                        console.error('Error en la respuesta:', data); // Debugging
                         throw new Error(data.message || 'Usuario o contraseña incorrectos');
                     });
                 }
                 return res.json();
             })
             .then((data) => {
-                console.log('Response from server:', data); 
-                if (data.result) {
-                    if (data.data && data.data.username && data.data.contrasenia) { 
-                        console.log(data);
+                console.log('Datos recibidos:', data); // Debugging
+                if (data.status === 'success') {
+                    if (data.data) { 
                         const user = {
                             id_usuario: data.data.usuario_id,
-                            username: data.data.username,
-                            contrasenia: data.data.contrasenia, 
+                            username: data.data.nombre,
                         };
                         localStorage.setItem('user', JSON.stringify(user));
                         setError(null);
-                        navigate('/');
+                        if (typeof onAuthenticate === 'function') {
+                            onAuthenticate(true); // Asegúrate de que esta línea se ejecute
+                        } else {
+                            console.error('onAuthenticate no es una función');
+                        }
+                        navigate('/home'); // Redirige a la página de inicio
                     } else {
                         throw new Error('Datos de usuario incompletos en la respuesta');
                     }
-                } else if (data) {
+                } else {
                     setError(data.message);
                 }
             })
             .catch((err) => {
-                console.error('Error during login:', err); 
-                setError(err.message || 'Usuario o contraseña incorrecta.');
+                console.error('Error en el inicio de sesión:', err); // Debugging
+                setError(err.message || 'Error en el inicio de sesión');
             });
         }
-    }, [credentials, navigate]);
+    }, [credentials, navigate, onAuthenticate]);
 
     return (
         <div className='contenedor'>

@@ -12,7 +12,8 @@ class LoginService(Resource):
             HandleLogs.write_log("Ejecutando servicio de Login")
             # Obtener el request
             rq_json = request.get_json()
-            # Validar ese request sea compatible con el modelo
+
+            # Validar que el request sea compatible con el modelo
             new_request = LoginRequest()
             error_en_validacion = new_request.validate(rq_json)
             if error_en_validacion:
@@ -20,7 +21,7 @@ class LoginService(Resource):
                 return response_error("Error al validar el request -> " + str(error_en_validacion))
 
             # Llamar al componente de Login para autenticación
-            resultado = LoginComponent.Login(rq_json['login_user'], rq_json['login_password'])
+            resultado = LoginComponent.login(rq_json['login_user'], rq_json['login_password'])
             if resultado['result']:
                 return response_success(resultado['message'], resultado['data'])
             else:
