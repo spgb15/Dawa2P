@@ -1,27 +1,48 @@
-import './App.css';
-import React, { useState} from 'react';
+// src/App.js
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from '../src/Pages/login.js';
-import Home from '../src/Pages/home.js';
-import Registro from '../src/Pages/registro.js';
-
+import Login from './Pages/login';
+import Home from './Pages/home';
+import Registro from './Pages/registro';
+import ChatsPage from './Pages/chats';
+import ProfilePage from './Pages/profile';
+import AdminPage from './Pages/admin';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  const handleAuthentication = (authenticated) => {
+  const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+
+  const handleAuthentication = (authenticated, id, role) => {
     setIsAuthenticated(authenticated);
+    setUserId(id);
+    setUserRole(role);
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setIsAuthenticated(true);
+      setUserId(user.id_usuario);
+      setUserRole(user.role);
+    }
+  }, []);
 
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login onAuthenticate={handleAuthentication} />} />
         <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
-        <Route path='/register' element={<Registro></Registro>} />
+        <Route path="/register" element={<Registro />} />
+        <Route path="/chats" element={<ChatsPage /> } />
+        <Route path="/profile" element={<ProfilePage /> } />
+        <Route path="/admin" element={<AdminPage /> } />
       </Routes>
     </Router>
   );
 }
+//<Route path="/chats" element={isAuthenticated ? <ChatsPage /> : <Navigate to="/login" />} />
+//<Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+//<Route path="/admin" element={isAuthenticated && userRole === 'admin' ? <AdminPage /> : <Navigate to="/login" />} />
 
 export default App;

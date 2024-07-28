@@ -74,15 +74,21 @@ export default function SignIn({ onAuthenticate }) {
                         const user = {
                             id_usuario: data.data.usuario_id,
                             username: data.data.nombre,
+                            role: data.data.role, // Asegúrate de que el rol del usuario esté incluido en la respuesta
                         };
                         localStorage.setItem('user', JSON.stringify(user));
                         setError(null);
                         if (typeof onAuthenticate === 'function') {
-                            onAuthenticate(true); // Asegúrate de que esta línea se ejecute
+                            onAuthenticate(true, user.id_usuario); // Asegúrate de pasar el ID del usuario al manejar la autenticación
                         } else {
                             console.error('onAuthenticate no es una función');
                         }
-                        navigate('/home'); // Redirige a la página de inicio
+                        // Redirige según el rol del usuario
+                        if (user.role === 'admin') {
+                            navigate('/admin');
+                        } else {
+                            navigate('/home');
+                        }
                     } else {
                         throw new Error('Datos de usuario incompletos en la respuesta');
                     }
