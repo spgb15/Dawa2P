@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from ..Components.post_component import PostComponent
+from ..components.post_component import PostComponent
 from ...utils.general.logs import HandleLogs
 from ...utils.general.response import response_error, response_success
 from datetime import datetime

@@ -1,5 +1,5 @@
-from dawaBack.dawa_back.src.utils.database.connection_db import DataBaseHandle
-from dawaBack.dawa_back.src.utils.general.logs import HandleLogs
+from src.utils.database.connection_db import DataBaseHandle
+from src.utils.general.logs import HandleLogs
 from datetime import datetime
 
 

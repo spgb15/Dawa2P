@@ -32,7 +32,7 @@ export default function SignUp() {
 
     const handleCedulaChange = (event) => {
         const value = event.target.value;
-        if (/^\d*$/.test(value)) { // Solo números
+        if (/^\d*$/.test(value)) { 
             setCedula(value);
         }
     };

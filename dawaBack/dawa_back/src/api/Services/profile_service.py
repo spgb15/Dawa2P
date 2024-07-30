@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from ..Components.profile_component import ProfileComponent
+from ..components.profile_component import ProfileComponent
 from ...utils.general.logs import HandleLogs
 from ...utils.general.response import response_error, response_success
 

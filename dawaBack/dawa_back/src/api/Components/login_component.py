@@ -3,6 +3,7 @@ from src.utils.general.logs import HandleLogs
 from src.utils.general.response import internal_response
 from src.api.components.jwt_component import JwtComponent
 
+
 class LoginComponent:
 
     @staticmethod
@@ -14,7 +15,7 @@ class LoginComponent:
 
             # Consulta SQL para obtener los datos del usuario
             sql = """
-            SELECT u.id as usuario_id, d.cedula, d.nombre, r.descripcion as rol
+            SELECT u.id as usuario_id, u.username as username, u.contrasenia as password, r.descripcion as rol
             FROM dawa.usuario u
             JOIN dawa.datos d ON u.id = d.id
             JOIN dawa.rol r ON d.rol = r.id
@@ -27,11 +28,14 @@ class LoginComponent:
                 if resul_login['data']:
                     user_data = resul_login['data']
 
-                    token = JwtComponent.TokenGenerate(p_user, p_clave)
+                    # Genera el token usando el id, username, y password
+                    token = JwtComponent.TokenGenerate(user_data['username'], user_data['password'],
+                                                       user_data['usuario_id'])
+
                     data = {
-                        'usuario_id': user_data['usuario_id'],
-                        'cedula': user_data['cedula'],
-                        'nombre': user_data['nombre'],
+                        'id': user_data['usuario_id'],
+                        'username': user_data['username'],
+                        'password': user_data['password'],
                         'rol': user_data['rol'],
                         'token': token
                     }

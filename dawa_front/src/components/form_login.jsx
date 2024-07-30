@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext'; 
 import Avatar from '@mui/material/Avatar';
@@ -41,16 +41,16 @@ export default function SignIn({ onAuthenticate }) {
         if (!username || !password) {
             setError('Ingrese Usuario o contraseña válida');
         } else {
-            const credentials = {
+            const newCredentials = {
                 login_user: username,
                 login_password: password,
             };
-            setCredentials(credentials);
-            setError(null); // Limpiar errores
+            setCredentials(newCredentials);
         }
     };
 
-    useEffect(() => {
+    // Handle fetch request when credentials are updated
+    React.useEffect(() => {
         if (credentials) {
             fetch("http://127.0.0.1:5000/security/login", {
                 method: "POST",
@@ -94,6 +94,8 @@ export default function SignIn({ onAuthenticate }) {
                         } else {
                             console.error('onAuthenticate no es una función');
                         }
+
+                        navigate(user.role === 'admin' ? '/admin' : '/home');
                     } else {
                         throw new Error('Datos de usuario incompletos en la respuesta');
                     }
@@ -104,6 +106,9 @@ export default function SignIn({ onAuthenticate }) {
             .catch((err) => {
                 console.error('Error en el inicio de sesión:', err); 
                 setError(err.message || 'Error en el inicio de sesión');
+            })
+            .finally(() => {
+                setCredentials(null); // Limpiar credenciales después de intentar la autenticación
             });
         }
     }, [credentials, navigate, onAuthenticate, setUser]);

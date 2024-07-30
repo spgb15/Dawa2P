@@ -4,14 +4,15 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from flask_swagger_ui import get_swaggerui_blueprint
-
 from src.api.Routes.routes import load_routes
 from src.utils.general.logs import HandleLogs
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
 load_routes(api)
+
 
 #definiciones del swagger
 SWAGGER_URL = '/ws/dawa/'

@@ -16,11 +16,7 @@ export default function Topbar() {
         <div className="topbar">
             <div className="topbarWrapper">
                 <div className="topbarLeft">
-                    <a href='/home'><span className="logo">RedSocial UG</span></a>
-                    
-                </div>
-                <div className="topbarCenter">
-                    <input type="text" placeholder="Buscar en RedSocial UG" className="searchInput" />
+                    <span className="logo">RedSocial UG</span>
                 </div>
                 <div className="topbarRight">
                     <img
