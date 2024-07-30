@@ -1,5 +1,7 @@
+// src/Components/form_login.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext'; 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -29,7 +31,7 @@ export default function SignIn({ onAuthenticate }) {
     const [error, setError] = useState(null);
     const [credentials, setCredentials] = useState(null);
     const navigate = useNavigate();
-
+    const { setUser } = useUser(); 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -50,7 +52,7 @@ export default function SignIn({ onAuthenticate }) {
 
     useEffect(() => {
         if (credentials) {
-            console.log('Enviando credenciales:', credentials); // Debugging
+            console.log('Enviando credenciales:', credentials); 
             fetch("http://127.0.0.1:5000/security/login", {
                 method: "POST",
                 headers: {
@@ -61,29 +63,31 @@ export default function SignIn({ onAuthenticate }) {
             .then((res) => {
                 if (!res.ok) {
                     return res.json().then((data) => {
-                        console.error('Error en la respuesta:', data); // Debugging
+                        console.error('Error en la respuesta:', data); 
                         throw new Error(data.message || 'Usuario o contraseña incorrectos');
                     });
                 }
                 return res.json();
             })
             .then((data) => {
-                console.log('Datos recibidos:', data); // Debugging
+                console.log('Datos recibidos:', data);
                 if (data.status === 'success') {
-                    if (data.data) { 
+                    if (data.data) {
                         const user = {
                             id_usuario: data.data.usuario_id,
                             username: data.data.nombre,
-                            role: data.data.role, // Asegúrate de que el rol del usuario esté incluido en la respuesta
+                            role: data.data.role, 
+                            profilePicture: data.data.profilePicture, 
                         };
                         localStorage.setItem('user', JSON.stringify(user));
+                        setUser(user); 
                         setError(null);
                         if (typeof onAuthenticate === 'function') {
-                            onAuthenticate(true, user.id_usuario); // Asegúrate de pasar el ID del usuario al manejar la autenticación
+                            onAuthenticate(true, user.id_usuario, user.role); 
                         } else {
                             console.error('onAuthenticate no es una función');
                         }
-                        // Redirige según el rol del usuario
+                     
                         if (user.role === 'admin') {
                             navigate('/admin');
                         } else {
@@ -97,11 +101,11 @@ export default function SignIn({ onAuthenticate }) {
                 }
             })
             .catch((err) => {
-                console.error('Error en el inicio de sesión:', err); // Debugging
+                console.error('Error en el inicio de sesión:', err); 
                 setError(err.message || 'Error en el inicio de sesión');
             });
         }
-    }, [credentials, navigate, onAuthenticate]);
+    }, [credentials, navigate, onAuthenticate, setUser]);
 
     return (
         <div className='contenedor'>
