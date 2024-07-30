@@ -36,9 +36,9 @@ function App() {
         <Route path="/login" element={<Login onAuthenticate={handleAuthentication} />} />
         <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
         <Route path="/register" element={<Registro />} />
-        <Route path="/chats" element={isAuthenticated ? <ChatsPage /> : <Navigate to="/login" />} />
+        <Route path="/chats" element={<ChatsPage />} />
         <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path="/admin" element={isAuthenticated && user?.role === 'admin' ? <AdminPage /> : <Navigate to="/login" />} />
+        <Route path="/admin" element={<AdminPage /> } />
       </Routes>
     </Router>
   );

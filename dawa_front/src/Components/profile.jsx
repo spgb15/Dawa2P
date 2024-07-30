@@ -1,4 +1,3 @@
-// src/Pages/ProfilePage.jsx
 import React, { useState, useEffect } from 'react';
 import TopBar from '../Components/Topbar.jsx';
 import '../Styles/profilePage.css';
@@ -8,10 +7,10 @@ const ProfilePage = () => {
     const [profile, setProfile] = useState({
         name: '',
         friendsCount: 0,
-        coverPhoto: '',
-        profilePhoto: '',
-        location: '',
-        hometown: '',
+        coverPhoto: '/default-cover-photo.jpg',
+        profilePhoto: '/default-profile-photo.jpg',
+        location: 'Ubicación desconocida',
+        hometown: 'Lugar de origen desconocido'
     });
     const { user } = useUser(); 
 
@@ -23,17 +22,21 @@ const ProfilePage = () => {
             }
 
             try {
-                const response = await fetch(`http://127.0.0.1:5000/profile?user_id=${user.id_usuario}`); 
+                const response = await fetch(`http://127.0.0.1:5000/profile?user_id=${user.id_usuario}`);
                 const data = await response.json();
+                
+                console.log('Profile data:', data);
 
-                if (data.result) {
+                // Verifica el estado de la respuesta
+                if (data.status === 'success') {
+                    // Actualiza el estado con los datos del perfil
                     setProfile({
-                        name: data.data.nombre,
+                        name: data.data.nombre || '',
                         friendsCount: data.data.amigos || 0,
                         coverPhoto: data.data.coverPhoto || '/default-cover-photo.jpg',
                         profilePhoto: data.data.profilePhoto || '/default-profile-photo.jpg',
-                        location: data.data.vive_en || 'Ubicación desconocida',
-                        hometown: data.data.de || 'Lugar de origen desconocido'
+                        location: data.data.location || 'Ubicación desconocida',
+                        hometown: data.data.hometown || 'Lugar de origen desconocido'
                     });
                 } else {
                     console.error('Error fetching profile data:', data.message);

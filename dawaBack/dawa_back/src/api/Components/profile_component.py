@@ -6,9 +6,8 @@ from flask import request
 class ProfileComponent:
 
     @staticmethod
-    def get_profile():
+    def get_profile(user_id):
         try:
-            user_id = request.args.get('user_id')
             if not user_id:
                 return {
                     'result': False,
@@ -17,9 +16,7 @@ class ProfileComponent:
 
             sql = """
             SELECT d.NOMBRE, 
-                   COALESCE(f.friend_count, 0) AS amigos, 
-                   p.vive_en, 
-                   p.de
+                   COALESCE(f.friend_count, 0) AS amigos
             FROM dawa.USUARIO u
             JOIN dawa.DATOS d ON u.ID = d.ID
             LEFT JOIN (
@@ -28,7 +25,6 @@ class ProfileComponent:
                 WHERE USER_ID1 = %s OR USER_ID2 = %s
                 GROUP BY USER_ID1
             ) f ON u.ID = f.user_id
-            LEFT JOIN dawa.PERFIL p ON u.ID = p.user_id
             WHERE u.ID = %s
             """
             record = (user_id, user_id, user_id)
@@ -44,8 +40,8 @@ class ProfileComponent:
                             'amigos': profile_data['amigos'],
                             'coverPhoto': '/path/to/default-cover-photo.jpg',
                             'profilePhoto': '/path/to/default-profile-photo.jpg',
-                            'location': profile_data['vive_en'] or 'Ubicación desconocida',
-                            'hometown': profile_data['de'] or 'Lugar de origen desconocido',
+                            'location': 'Ubicación desconocida',  # Placeholder if column is missing
+                            'hometown': 'Lugar de origen desconocido',  # Placeholder if column is missing
                         },
                         'message': 'Perfil encontrado'
                     }

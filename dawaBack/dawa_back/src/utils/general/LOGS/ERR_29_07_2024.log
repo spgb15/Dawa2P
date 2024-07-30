@@ -1,0 +1,6 @@
+21:19:12 - ERR - get - ('Error en el método get de ProfileService: ProfileComponent.get_profile() takes 0 positional arguments but 1 was given',)
+21:22:33 - ERR - get - ('Error en el método get de ProfileService: ProfileComponent.get_profile() takes 0 positional arguments but 1 was given',)
+21:22:48 - ERR - getRecords - (UndefinedTable('no existe la relación «dawa.perfil»\nLINE 14:             LEFT JOIN dawa.PERFIL p ON u.ID = p.user_id\n                               ^\n'),)
+21:23:59 - ERR - getRecords - (UndefinedTable('no existe la relación «dawa.perfil»\nLINE 14:             LEFT JOIN dawa.PERFIL p ON u.ID = p.user_id\n                               ^\n'),)
+21:24:08 - ERR - get - ("Error en el método get de ProfileService: name 'HandleLogs' is not defined",)
+21:24:36 - ERR - getRecords - (UndefinedColumn('no existe la columna d.vive_en\nLINE 4:                    d.vive_en, \n                           ^\n'),)
