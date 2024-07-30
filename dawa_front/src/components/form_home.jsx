@@ -1,5 +1,5 @@
 // src/components/form_home.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -18,6 +18,10 @@ export default function HomeForm() {
             console.log('Nueva publicación:', postContent);
         }
     };
+
+    useEffect(()=>{
+        
+    })
 
     return (
         <Box

@@ -13,3 +13,4 @@ class Parametros:
     db_host = CFG[AMBIENTE]['db_host']
     db_name = CFG[AMBIENTE]['db_name']
     db_port = CFG[AMBIENTE]['db_port']
+    jwt_pass = CFG[AMBIENTE]['secret_jwt']

@@ -1,9 +1,7 @@
-import jwt
-import datetime
-from dawaBack.dawa_back.src.utils.database.connection_db import DataBaseHandle
-from dawaBack.dawa_back.src.utils.general.logs import HandleLogs
-from dawaBack.dawa_back.src.utils.general.response import internal_response
-
+from src.utils.database.connection_db import DataBaseHandle
+from src.utils.general.logs import HandleLogs
+from src.utils.general.response import internal_response
+from src.api.components.jwt_component import JwtComponent
 
 class LoginComponent:
 
@@ -14,15 +12,12 @@ class LoginComponent:
             data = None
             message = None
 
-            # Definir la clave secreta para JWT
-            SECRET_KEY = 'mi_clave_secreta'  # Cambia esto por una clave secreta y segura
-
             # Consulta SQL para obtener los datos del usuario
             sql = """
-            SELECT u.id as usuario_id, d.cedula, d.nombre, r.descripcion as rol 
-            FROM dawa.USUARIO u 
-            JOIN dawa.DATOS d ON u.id = d.id 
-            JOIN dawa.ROL r ON d.rol = r.id 
+            SELECT u.id as usuario_id, d.cedula, d.nombre, r.descripcion as rol
+            FROM dawa.usuario u
+            JOIN dawa.datos d ON u.id = d.id
+            JOIN dawa.rol r ON d.rol = r.id
             WHERE u.username = %s AND u.contrasenia = %s
             """
             record = (p_user, p_clave)
@@ -32,12 +27,7 @@ class LoginComponent:
                 if resul_login['data']:
                     user_data = resul_login['data']
 
-                    # Generar el token JWT
-                    token = jwt.encode({
-                        'usuario_id': user_data['usuario_id'],
-                        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
-                    }, SECRET_KEY, algorithm='HS256')
-
+                    token = JwtComponent.TokenGenerate(p_user, p_clave)
                     data = {
                         'usuario_id': user_data['usuario_id'],
                         'cedula': user_data['cedula'],

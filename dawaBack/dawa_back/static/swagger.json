@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Documentación  de practica",
+    "description": "Documentación de practica",
     "version": "1.0.0",
-    "title": "Documentación  de practica",
+    "title": "Documentación de practica",
     "termsOfService": "Guerra Sergio",
     "contact": {
       "email": "sergio.guerrab@ug.edu.ec"
@@ -16,6 +16,10 @@
     {
       "name": "Login",
       "description": "Taller 3.2"
+    },
+    {
+      "name": "WS Security",
+      "description": "Servicios de Seguridad"
     }
   ],
   "paths": {
@@ -34,7 +38,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "",
+            "description": "Datos de usuario para el login",
             "required": true,
             "schema": {
               "$ref": "#/definitions/loginUserDef"
@@ -49,45 +53,92 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Error del servidor",
             "schema": {
               "$ref": "#/definitions/ErrorResponse"
             }
           },
           "400": {
-            "description": "Not Found",
+            "description": "Recurso no encontrado",
             "schema": {
               "$ref": "#/definitions/NotFound"
             }
           }
         }
       }
+    },
+    "/token": {
+      "post": {
+        "tags": [
+          "WS Security"
+        ],
+        "summary": "Lista de Usuarios",
+        "description": "Obtiene una lista de usuarios con base en el token proporcionado",
+        "operationId": "userList",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "tokenapp",
+            "description": "Token para autenticación",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa",
+            "schema": {
+              "$ref": "#/definitions/Response"
+            }
+          },
+          "500": {
+            "description": "Error del servidor",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "400": {
+            "description": "Recurso no encontrado",
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
     }
   },
   "definitions": {
-   "loginUserDef": {
-     "type": "object",
-     "properties": {
-       "login_user": {
-         "type": "string",
-         "format": "string"
-       },
-       "login_password": {
-         "type": "string",
-         "format": "string"
-       }
-     }
+    "loginUserDef": {
+      "type": "object",
+      "properties": {
+        "login_user": {
+          "type": "string",
+          "format": "string"
+        },
+        "login_password": {
+          "type": "string",
+          "format": "string"
+        }
+      }
     },
-   "NotFound": {
+    "NotFound": {
       "type": "object",
       "properties": {
         "success": {
-            "type": "boolean",
-            "default": false
+          "type": "boolean",
+          "default": false
         },
         "message": {
-            "type": "string",
-            "example": "Recurso no encontrado"
+          "type": "string",
+          "example": "Recurso no encontrado"
         },
         "data": {
           "type": "string",
@@ -99,15 +150,15 @@
         }
       }
     },
-   "ErrorResponse": {
+    "ErrorResponse": {
       "type": "object",
       "properties": {
         "success": {
-            "type": "boolean",
-            "default": false
+          "type": "boolean",
+          "default": false
         },
         "message": {
-            "type": "string"
+          "type": "string"
         },
         "data": {
           "type": "string",
@@ -119,16 +170,16 @@
         }
       }
     },
-   "Response": {
+    "Response": {
       "type": "object",
       "properties": {
         "success": {
-            "type": "boolean",
-            "default": false
+          "type": "boolean",
+          "default": true
         },
         "message": {
-            "type": "string",
-            "example": "ok"
+          "type": "string",
+          "example": "ok"
         },
         "data": {
           "type": "string",
@@ -139,6 +190,13 @@
           "example": "200"
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "tokenapp",
+      "in": "header"
     }
   },
   "externalDocs": {

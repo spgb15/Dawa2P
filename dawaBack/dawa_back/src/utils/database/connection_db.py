@@ -1,84 +1,77 @@
 #Permitir conectarme a una base de datos PostgreSQl
-import psycopg2
-import psycopg2.extras
-from psycopg2.extras import RealDictCursor
-
 from ..general.config import Parametros
 from ..general.logs import HandleLogs
 from ..general.response import internal_response
 
+import psycopg2
+import psycopg2.extras
+from psycopg2.extras import RealDictCursor
 
 def conn_db():
-    return psycopg2.connect(host=Parametros.db_host,
-                            port=int(Parametros.db_port),
-                            user=Parametros.db_user,
-                            password=Parametros.db_pass,
-                            database=Parametros.db_name,
-                            cursor_factory=RealDictCursor)
+    conn = psycopg2.connect(
+        host=Parametros.db_host,
+        port=int(Parametros.db_port),
+        user=Parametros.db_user,
+        password=Parametros.db_pass,
+        database=Parametros.db_name,
+        cursor_factory=RealDictCursor
+    )
+    conn.set_client_encoding('UTF8')
+    return conn
+
 
 class DataBaseHandle:
-    #Nuestros Metodos para ejecutar sentencias.
-    #ejecuta metodos de tipo select
     @staticmethod
-    def getRecords(query,  tamanio, record=()):
+    def getRecords(query, tamanio, record=()):
+        conn = None
         try:
-            result = False
-            message = None
-            data = None
-
             conn = conn_db()
-            cursor = conn.cursor()
-            if len(record) == 0:
-                cursor.execute(query)
-            else:
-                cursor.execute(query, record)
-            # tamanio es 0 todos, 1 solo uno, > 1 n registros
-            if tamanio == 0:
-                res = cursor.fetchall()
-            elif tamanio == 1:
-                res = cursor.fetchone()
-            else:
-                res = cursor.fetchmany(tamanio)
+            with conn.cursor() as cursor:
+                if not record:
+                    cursor.execute(query)
+                else:
+                    cursor.execute(query, record)
 
-            data = res
-            result = True
+                if tamanio == 0:
+                    res = cursor.fetchall()
+                elif tamanio == 1:
+                    res = cursor.fetchone()
+                else:
+                    res = cursor.fetchmany(tamanio)
+
+            return internal_response(True, res, None)
+
         except Exception as ex:
             HandleLogs.write_error(ex)
-            message = ex.__str__()
-        finally:
-            cursor.close()
-            conn.close()
-            return internal_response(result, data, message)
+            return internal_response(False, None, str(ex))
 
-    #ejecuta metodos de tipo INSERT-UPDATE-DELETE
+        finally:
+            if conn:
+                conn.close()
+
     @staticmethod
     def ExecuteNonQuery(query, record):
+        conn = None
         try:
-            result = False
-            message = None
-            data = None
             conn = conn_db()
-            cursor = conn.cursor()
-            if len(record) == 0:
-                cursor.execute(query)
-            else:
-                cursor.execute(query, record)
+            with conn.cursor() as cursor:
+                if len(record) == 0:
+                    cursor.execute(query)
+                else:
+                    cursor.execute(query, record)
 
-            if query.find('INSERT') > -1:
-                cursor.execute('SELECT LASTVAL()')
-                ult_id = cursor.fetchone()['lastval']
-                conn.commit()
-                data = ult_id
-            else:
-                data = 0
-            result = True
+                if query.find('INSERT') > -1:
+                    cursor.execute('SELECT LASTVAL()')
+                    ult_id = cursor.fetchone()['lastval']
+                    conn.commit()
+                    return internal_response(True, ult_id, None)
+                else:
+                    return internal_response(True, 0, None)
+
         except Exception as ex:
             HandleLogs.write_error(ex)
-            message = ex.__str__()
+            return internal_response(False, None, str(ex))
+
         finally:
-            cursor.close()
-            conn.close()
-            return internal_response(result, data, message)
-
-
-
+            if conn:
+                conn.close()

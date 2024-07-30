@@ -1,4 +1,3 @@
-// src/Components/form_login.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext'; 
@@ -32,6 +31,7 @@ export default function SignIn({ onAuthenticate }) {
     const [credentials, setCredentials] = useState(null);
     const navigate = useNavigate();
     const { setUser } = useUser(); 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -52,7 +52,6 @@ export default function SignIn({ onAuthenticate }) {
 
     useEffect(() => {
         if (credentials) {
-            console.log('Enviando credenciales:', credentials); 
             fetch("http://127.0.0.1:5000/security/login", {
                 method: "POST",
                 headers: {
@@ -70,28 +69,30 @@ export default function SignIn({ onAuthenticate }) {
                 return res.json();
             })
             .then((data) => {
-                console.log('Datos recibidos:', data);
                 if (data.status === 'success') {
                     if (data.data) {
                         const user = {
                             id_usuario: data.data.usuario_id,
                             username: data.data.nombre,
-                            role: data.data.role, 
-                            profilePicture: data.data.profilePicture, 
+                            role: data.data.rol,  
+                            profilePicture: data.data.profilePicture || '', 
                         };
+
+                        const token = data.data.token;  
+                        console.log('Token recibido:', token);
+                        if (token) {
+                            localStorage.setItem('tokenss', token);  
+                        } else {
+                            console.error('Token no recibido');
+                        }
+
                         localStorage.setItem('user', JSON.stringify(user));
                         setUser(user); 
                         setError(null);
                         if (typeof onAuthenticate === 'function') {
-                            onAuthenticate(true, user.id_usuario, user.role); 
+                            onAuthenticate(true, user.id_usuario, user.role, token); 
                         } else {
                             console.error('onAuthenticate no es una función');
-                        }
-                     
-                        if (user.role === 'admin') {
-                            navigate('/admin');
-                        } else {
-                            navigate('/home');
                         }
                     } else {
                         throw new Error('Datos de usuario incompletos en la respuesta');

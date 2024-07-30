@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from ..Components.login_component import LoginComponent
+from ..components.login_component import LoginComponent
 from ..model.request.login_request import LoginRequest
 from ...utils.general.logs import HandleLogs
 from ...utils.general.response import response_error, response_success
